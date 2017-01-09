@@ -1,7 +1,7 @@
 export default (store, props, render, jsx, timeout) => {
   return new Promise((resolve, reject) => {
     const unsubscribe = store.subscribe(() => {
-      if (store.getState().hydrate.ready) {
+      if (store.getState().hydrationReducer.ready) {
         resolve()
         unsubscribe()
       }

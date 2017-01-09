@@ -7,7 +7,7 @@ export default (state = { register: [], initialized: false, ready: false }, acti
       }
       break
     case 'HYDRATE_START':
-      return Object.assign({}, state, { initialized: true })
+      return Object.assign({}, state, { initialized: true, ready: state.register.length < 1 })
       break
     default: {
         if (state.ready) {
