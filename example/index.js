@@ -14,21 +14,25 @@ const app = express()
 const PORT = 3000
 const TIMEOUT = 6000
 
-app.get('/router', (req, res) => {
+app.get('/manual', (req, res) => {
+  // New store must be created on each request, otherwise state will persist
   let store = Store()
-  let context = createServerRenderContext()
 
-  const jsx = (store, props) => (<Provider store={store}><Routes location={req.url} context={context} /></Provider>)
-  // Optionally pass additional props to component
-  const props = {}
-  Helper(store, props, renderToString, jsx, TIMEOUT)
-  .then(() => {
-    res.send(renderToString(jsx(store, props)))
+  // When ready, re-render with updated store and send response
+  const unsubscribe = store.subscribe(() => {
+    if (store.getState().hydrationReducer.ready) {
+      res.send(renderToString(<Provider store={store}><Component /></Provider>))
+      unsubscribe()
+    }
   })
-  .catch((err) => {
-    console.error(err)
-    res.sendStatus(500)
-  })
+
+  // Execute renderToString() to trigger route onEnter() or componentWillMount()
+  // in order to register actions synchronously
+  renderToString(<Provider store={store}><Component /></Provider>)
+
+  // Because renderToString() is synchronous, all onEnter() or componentWillMount()
+  // calls should have registered all async resolvers so we can initialize hydration process
+  store.dispatch({ type: 'HYDRATE_START' })
 })
 
 app.get('/helper', (req, res) => {
@@ -48,24 +52,20 @@ app.get('/helper', (req, res) => {
 })
 
 app.get('*', (req, res) => {
-  // New store must be created on each request, otherwise state will persist
   let store = Store()
+  let context = createServerRenderContext()
 
-  // When ready, re-render with updated store and send response
-  const unsubscribe = store.subscribe(() => {
-    if (store.getState().hydrationReducer.ready) {
-      res.send(renderToString(<Provider store={store}><Component /></Provider>))
-      unsubscribe()
-    }
+  const jsx = (store, props) => (<Provider store={store}><Routes location={req.url} context={context} /></Provider>)
+  // Optionally pass additional props to component
+  const props = {}
+  Helper(store, props, renderToString, jsx, TIMEOUT)
+  .then(() => {
+    res.send(renderToString(jsx(store, props)))
   })
-
-  // Execute renderToString() to trigger route onEnter() or componentWillMount()
-  // in order to register actions synchronously
-  renderToString(<Provider store={store}><Component /></Provider>)
-
-  // Because renderToString() is synchronous, all onEnter() or componentWillMount()
-  // calls should have registered all async resolvers so we can initialize hydration process
-  store.dispatch({ type: 'HYDRATE_START' })
+  .catch((err) => {
+    console.error(err)
+    res.sendStatus(500)
+  })
 })
 
 app.listen(PORT, (err) => {
