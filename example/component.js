@@ -5,7 +5,7 @@ class Component extends React.Component {
 
   componentWillMount() {
     // If these are executed even after state is hydrated it will result in infinite loop
-    if (!this.props.hydrate.ready) {
+    if (!this.props.hydrationReducer.ready) {
       this.props.dispatch({ type: 'HYDRATE_REGISTER', resolve: ['ASYNC_SUCCESS', 'ASYNC_FAIL'] })
       this.props.dispatch({ type: 'ASYNC_START' })
     }
@@ -22,6 +22,6 @@ class Component extends React.Component {
   }
 }
 
-const mapState = (state) => ({ hydrate: state.hydrate, serverData: state.app.serverData })
+const mapState = (state) => ({ hydrationReducer: state.hydrationReducer, serverData: state.app.serverData })
 
 export default connect(mapState)(Component)

@@ -2,21 +2,40 @@ import React from 'react'
 import express from 'express'
 import { renderToString } from 'react-dom/server'
 import { Provider } from 'react-redux'
+import createServerRenderContext from 'react-router/createServerRenderContext'
 import Helper from '../src/helper'
 
 import Component from './component'
 import Store from './store'
+import Routes from './routes'
 
 const app = express()
 
 const PORT = 3000
 const TIMEOUT = 6000
 
+app.get('/router', (req, res) => {
+  let store = Store()
+  let context = createServerRenderContext()
+
+  const jsx = (store, props) => (<Provider store={store}><Routes location={req.url} context={context} /></Provider>)
+  // Optionally pass additional props to component
+  const props = {}
+  Helper(store, props, renderToString, jsx, TIMEOUT)
+  .then(() => {
+    res.send(renderToString(jsx(store, props)))
+  })
+  .catch((err) => {
+    console.error(err)
+    res.sendStatus(500)
+  })
+})
+
 app.get('/helper', (req, res) => {
   let store = Store()
 
   const jsx = (store, props) => (<Provider store={store}><Component /></Provider>)
-  // renderProps from react-router match() or any other required props
+  // Optionally pass additional props to component
   const props = {}
   Helper(store, props, renderToString, jsx, TIMEOUT)
   .then(() => {
@@ -34,7 +53,7 @@ app.get('*', (req, res) => {
 
   // When ready, re-render with updated store and send response
   const unsubscribe = store.subscribe(() => {
-    if (store.getState().hydrate.ready) {
+    if (store.getState().hydrationReducer.ready) {
       res.send(renderToString(<Provider store={store}><Component /></Provider>))
       unsubscribe()
     }
