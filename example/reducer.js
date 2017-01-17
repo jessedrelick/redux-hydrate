@@ -3,6 +3,9 @@ import hydrationReducer from '../src/reducer'
 
 const app = (state = { serverData: '' }, action) => {
   switch(action.type) {
+    case 'SYNC_SUCCESS':
+      return Object.assign({}, state, { serverData: action.data })
+      break
     case 'ASYNC_SUCCESS':
       return Object.assign({}, state, { serverData: action.data })
       break

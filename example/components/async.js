@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
-const Stateless = ({ serverData }) => (
+const Async = ({ serverData }) => (
   <div>
     <div>{serverData}</div>
   </div>
@@ -9,4 +9,4 @@ const Stateless = ({ serverData }) => (
 
 const mapState = (state) => ({ serverData: state.app.serverData })
 
-export default connect(mapState)(Stateless)
+export default connect(mapState)(Async)

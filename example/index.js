@@ -5,7 +5,7 @@ import { Provider } from 'react-redux'
 import createServerRenderContext from 'react-router/createServerRenderContext'
 import Helper from '../src/helper'
 
-import Component from './component'
+import Component from './components/sync'
 import Store from './store'
 import Routes from './routes'
 
