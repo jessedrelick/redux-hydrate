@@ -7,7 +7,18 @@ Object.defineProperty(exports, "__esModule", {
 exports.default = function (store, props, render, jsx, timeout) {
   return new Promise(function (resolve, reject) {
     var unsubscribe = store.subscribe(function () {
-      if (store.getState().hydrationReducer.ready) {
+      var state = store.getState().hydrationReducer;
+      if (state.reducers.loaded && !state.reducers.ready) {
+        //store.replaceReducer(reducer, state.getState())
+        store.dispatch({ type: 'HYDRATE_REDUCER_READY' });
+      }
+      if (state.reducers.ready && state.sagas.ready) {
+        console.log('SAGAS + REDUCERS READY');
+        var queue = state.resolvers.queue;
+
+        console.log(queue);
+      }
+      if (state.ready) {
         resolve();
         unsubscribe();
       }

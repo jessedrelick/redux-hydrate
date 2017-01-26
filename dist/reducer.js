@@ -4,55 +4,66 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-exports.default = function () {
-  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { register: [], components: {}, initialized: false, ready: false };
+var _redux = require('redux');
+
+var _components = require('./reducers/components');
+
+var _components2 = _interopRequireDefault(_components);
+
+var _reducers = require('./reducers/reducers');
+
+var _reducers2 = _interopRequireDefault(_reducers);
+
+var _resolvers = require('./reducers/resolvers');
+
+var _resolvers2 = _interopRequireDefault(_resolvers);
+
+var _sagas = require('./reducers/sagas');
+
+var _sagas2 = _interopRequireDefault(_sagas);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var init = {
+  initialized: false,
+  ready: false
+};
+
+var hydration = function hydration() {
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : init;
   var action = arguments[1];
 
+  //console.log(action)
   switch (action.type) {
-    case 'HYDRATE_REGISTER':
-      {
-        var register = state.register.slice();
-        var components = Object.assign({}, state.components);
-        if (action.resolve) {
-          register.push(action.resolve);
-        } else if (action.name) {
-          components[action.name] = false;
-        }
-
-        return Object.assign({}, state, { register: register, components: components });
-      }
-      break;
     case 'HYDRATE_START':
-      {
-        var _components = Object.keys(state.components).filter(function (item) {
-          return state.components[item] === false;
-        });
-        return Object.assign({}, state, { initialized: true, ready: state.register.length < 1 && _components.length < 1 });
-      }
-      break;
-    case 'HYDRATE_COMPONENT':
-      {
-        var _components2 = Object.assign({}, state.components);
-        _components2[action.name] = action.component;
-        return Object.assign({}, state, { components: _components2 });
-      }
+      return Object.assign({}, state, { initialized: true });
       break;
     default:
       {
         if (state.ready) {
           return state;
         }
-        var _register = state.register.filter(function (item) {
-          return item.indexOf(action.type) > -1 ? false : true;
-        });
-        var _components3 = Object.keys(state.components).filter(function (item) {
-          return state.components[item] === false;
-        });
-        return Object.assign({}, state, {
-          register: _register,
-          ready: state.initialized === true && _register.length < 1 && _components3.length < 1
-        });
+        // SET TIMEOUT TO WAIT FOR NEXT TICK, ENSURING ANY CHILD REDUCERS ARE UPDATED
+        // root.setTimeout(() => {
+        //   let ready = false
+        //   const { components, reducers, sagas, resolvers, initialized } = state
+        //   if (components.ready && reducers.ready && sagas.ready && resolvers.ready && initialized) {
+        //     ready = true
+        //   }
+        //   return Object.assign({}, state, {
+        //     ready
+        //   })
+        // }, 1)
+        return state;
       }
       break;
   }
 };
+
+exports.default = (0, _redux.combineReducers)({
+  hydration: hydration,
+  components: _components2.default,
+  reducers: _reducers2.default,
+  resolvers: _resolvers2.default,
+  sagas: _sagas2.default
+});

@@ -4,10 +4,20 @@ import Match from 'react-router/Match'
 import { hydrationComponent } from '../index'
 
 import Sync from './components/sync'
-const Async = hydrationComponent(import('./components/async'), [
-	{ type: 'HYDRATE_REGISTER', resolve: ['ASYNC_SUCCESS', 'ASYNC_FAIL'] },
-	{ type: 'ASYNC_START' }
-], 'stateless')
+const Async = hydrationComponent({
+	name: 'stateless',
+	component: import('./components/async'),
+	reducer: import('./components/async/reducer'),
+	saga: import('./components/async/saga'),
+	resolve: [
+		['ASYNC_SUCCESS', 'ASYNC_FAIL'],
+	],
+	queue: [
+		{ type: 'ASYNC_START' },
+		{ type: 'BLOCK_CHECK' },
+		{ type: 'ANOTHER_CHECK' }
+	]
+})
 
 export default ({ location, context }) => (<Router location={location} context={context}>
 	<div>

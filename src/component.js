@@ -1,29 +1,55 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
-export default function(Component, resolve, name) {
+export default function({ name, component, reducer, saga, resolve, queue }) {
 	class Hydrate extends React.Component {
 
 		componentWillMount() {
 			if (!this.props.hydrationReducer.ready && resolve) {
-				resolve.forEach((action) => {
-					this.props.dispatch(action)
+				resolve.forEach((types) => {
+					this.props.dispatch({ type: 'HYDRATE_RESOLVE_REGISTER', resolve: types })
 				})
 			}
-			if (Component.then && name) {
-				this.props.dispatch({ type: 'HYDRATE_REGISTER', name })
-				Component.then((mod) => {
-					this.props.dispatch({ type: 'HYDRATE_COMPONENT', name, component: mod.default })
+			if (queue) {
+				queue.forEach((action) => {
+					this.props.dispatch({ type: 'HYDRATE_QUEUE_REGISTER', action })
+				})
+			}
+			if (component.then && name) {
+				this.props.dispatch({ type: 'HYDRATE_COMPONENT_IMPORT', name })
+				component.then((mod) => {
+					this.props.dispatch({ type: 'HYDRATE_COMPONENT_LOADED', name, component: mod.default })
+				})
+				.catch((err) => {
+					console.error(err)
+				})
+			}
+			if (reducer && reducer.then && name) {
+				this.props.dispatch({ type: 'HYDRATE_REDUCER_IMPORT', name })
+				reducer.then((mod) => {
+					this.props.dispatch({ type: 'HYDRATE_REDUCER_LOADED', name, reducer: mod.default })
+				})
+				.catch((err) => {
+					console.error(err)
+				})
+			}
+			if (saga && saga.then && name) {
+				this.props.dispatch({ type: 'HYDRATE_SAGA_IMPORT', name })
+				reducer.then((mod) => {
+					this.props.dispatch({ type: 'HYDRATE_SAGA_LOADED', name, saga: mod.default })
+				})
+				.catch((err) => {
+					console.error(err)
 				})
 			}
 		}
 
 		render() {
-			if (!Component.then) {
-				return <Component {...this.props} />
+			if (!component.then) {
+				return <component {...this.props} />
 			}
-			const { hydrationReducer } = this.props
-			const Async = hydrationReducer.components[name]
+			const { components } = this.props.hydrationReducer
+			const Async = components[name]
 			if (Async) {
 				return <Async {...this.props} />
 			}

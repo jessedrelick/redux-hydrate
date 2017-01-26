@@ -1,8 +1,10 @@
 import { put, take, spawn } from 'redux-saga/effects'
 import { delay } from 'redux-saga'
+import { hydrationSaga } from '../index'
 
 export default function* init() {
   yield [
+    spawn(hydrationSaga),
     spawn(sync),
     spawn(async)
   ]
