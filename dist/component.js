@@ -69,7 +69,7 @@ exports.default = function (_ref) {
 				if (!component.then) {
 					return _react2.default.createElement('component', this.props);
 				}
-				var components = this.props.hydrationReducer.components;
+				var components = this.props.hydrationReducer.components.components;
 
 				var Async = components[name];
 				if (Async) {

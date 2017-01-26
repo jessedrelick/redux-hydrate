@@ -48,7 +48,7 @@ export default function({ name, component, reducer, saga, resolve, queue }) {
 			if (!component.then) {
 				return <component {...this.props} />
 			}
-			const { components } = this.props.hydrationReducer
+			const { components } = this.props.hydrationReducer.components
 			const Async = components[name]
 			if (Async) {
 				return <Async {...this.props} />
