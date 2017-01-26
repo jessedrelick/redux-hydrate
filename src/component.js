@@ -35,7 +35,7 @@ export default function({ name, component, reducer, saga, resolve, queue }) {
 			}
 			if (saga && saga.then && name) {
 				this.props.dispatch({ type: 'HYDRATE_SAGA_IMPORT', name })
-				reducer.then((mod) => {
+				saga.then((mod) => {
 					this.props.dispatch({ type: 'HYDRATE_SAGA_LOADED', name, saga: mod.default })
 				})
 				.catch((err) => {

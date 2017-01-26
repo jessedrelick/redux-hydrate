@@ -8,8 +8,10 @@ export default function* init() {
 		const reducersReady = yield select(state => state.hydrationReducer.reducers.ready)
 		const sagasLoaded = yield select(state => state.hydrationReducer.sagas.loaded)
 		if (reducersReady && sagasLoaded) {
-			// const sagas = yield select(state => state.hydrationReducer.sagas)
-			// yield spawn(sagas)
+			const { sagas } = yield select(state => state.hydrationReducer.sagas)
+			Object.keys(sagas).map((key) => {
+				return spawn(sagas[key])
+			})
 			yield put({ type: 'HYDRATE_SAGA_READY' })
 			ready = true
 		}

@@ -56,7 +56,7 @@ exports.default = function (_ref) {
 				}
 				if (saga && saga.then && name) {
 					this.props.dispatch({ type: 'HYDRATE_SAGA_IMPORT', name: name });
-					reducer.then(function (mod) {
+					saga.then(function (mod) {
 						_this2.props.dispatch({ type: 'HYDRATE_SAGA_LOADED', name: name, saga: mod.default });
 					}).catch(function (err) {
 						console.error(err);
@@ -69,9 +69,9 @@ exports.default = function (_ref) {
 				if (!component.then) {
 					return _react2.default.createElement('component', this.props);
 				}
-				var hydrationReducer = this.props.hydrationReducer;
+				var components = this.props.hydrationReducer.components;
 
-				var Async = hydrationReducer.components[name];
+				var Async = components[name];
 				if (Async) {
 					return _react2.default.createElement(Async, this.props);
 				}

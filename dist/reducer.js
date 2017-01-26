@@ -33,29 +33,16 @@ var hydration = function hydration() {
   var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : init;
   var action = arguments[1];
 
-  //console.log(action)
+
   switch (action.type) {
     case 'HYDRATE_START':
       return Object.assign({}, state, { initialized: true });
       break;
+    case 'HYDRATE_COMPLETE':
+      return Object.assign({}, state, { ready: true });
+      break;
     default:
-      {
-        if (state.ready) {
-          return state;
-        }
-        // SET TIMEOUT TO WAIT FOR NEXT TICK, ENSURING ANY CHILD REDUCERS ARE UPDATED
-        // root.setTimeout(() => {
-        //   let ready = false
-        //   const { components, reducers, sagas, resolvers, initialized } = state
-        //   if (components.ready && reducers.ready && sagas.ready && resolvers.ready && initialized) {
-        //     ready = true
-        //   }
-        //   return Object.assign({}, state, {
-        //     ready
-        //   })
-        // }, 1)
-        return state;
-      }
+      return state;
       break;
   }
 };

@@ -4,8 +4,6 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 var init = {
-  loaded: false,
-  ready: false,
   resolvers: [],
   queue: []
 };
@@ -28,7 +26,7 @@ exports.default = function () {
       break;
     default:
       {
-        if (state.ready || state.resolvers.length < 1) {
+        if (state.resolvers.length < 1) {
           return state;
         }
         resolvers = resolvers.filter(function (item) {
