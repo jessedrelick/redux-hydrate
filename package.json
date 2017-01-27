@@ -4,8 +4,11 @@
   "description": "Simple library for hydrating Redux state on the server",
   "main": "index.js",
   "scripts": {
-    "start": "./node_modules/.bin/babel-node example/index.js --plugins=dynamic-import-node",
-    "build": "./node_modules/.bin/babel src --out-dir dist"
+    "start": "./node_modules/.bin/babel-node example/index.js",
+    "server": "./node_modules/.bin/babel-node server.js",
+    "build": "npm run build:package && npm run build:example",
+    "build:package": "./node_modules/.bin/babel src --out-dir dist",
+    "build:example": "./node_modules/.bin/webpack"
   },
   "repository": {
     "type": "git",
@@ -24,8 +27,12 @@
   },
   "devDependencies": {
     "babel-cli": "^6.18.0",
+    "babel-loader": "^6.2.10",
     "babel-plugin-dynamic-import-node": "^1.0.0",
+    "babel-polyfill": "^6.22.0",
     "babel-preset-latest": "^6.16.0",
-    "babel-preset-react": "^6.16.0"
+    "babel-preset-react": "^6.16.0",
+    "webpack": "2.2.0",
+    "webpack-dev-server": "^1.16.2"
   }
 }

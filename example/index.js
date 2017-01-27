@@ -7,7 +7,7 @@ import Helper from '../src/helper'
 
 import Component from './components/sync'
 import Store from './store'
-import Routes from './routes'
+import Routes from './server'
 
 const app = express()
 
