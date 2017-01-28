@@ -16,7 +16,7 @@ class Sync extends React.Component {
 
     return (
       <div>
-        <div>{serverData}</div>
+        <div>Loading: {serverData}</div>
       </div>
     )
   }

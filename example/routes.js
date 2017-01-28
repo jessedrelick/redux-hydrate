@@ -5,9 +5,9 @@ import { hydrationComponent } from '../index'
 import Sync from './components/sync'
 const Async = hydrationComponent({
 	name: 'stateless',
-	component: import('./components/async'),
-	reducer: import('./components/async/reducer'),
-	saga: import('./components/async/saga'),
+	component: System.import('./components/async'),
+	reducer: System.import('./components/async/reducer'),
+	saga: System.import('./components/async/saga'),
 	resolve: [
 		['ASYNC_SUCCESS', 'ASYNC_FAIL'],
 	],

@@ -16,7 +16,7 @@ module.exports = {
 	output: {
 		path: path.join(__dirname, 'build'),
 		filename: '[name].js',
-		publicPath: HOST + '/build/'
+		publicPath: '/build/'
 	},
 	plugins: [
 		new webpack.optimize.CommonsChunkPlugin({name: "vendor", minChunks: Infinity}),
@@ -35,7 +35,7 @@ module.exports = {
 				test: /\.(js|jsx)$/,
 				exclude: /node_modules/,
 				loader: 'babel-loader',
-				query: {
+				options: {
 					presets: [
 						//'react-hmre'
 					]

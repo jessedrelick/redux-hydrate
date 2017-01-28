@@ -1,4 +1,3 @@
 {
-  "presets": ["react", "latest"],
-  "plugins": ["dynamic-import-node"]
+  "presets": ["react", "latest"]
 }

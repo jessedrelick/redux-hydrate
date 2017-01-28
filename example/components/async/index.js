@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 
 const Async = ({ serverData }) => (
   <div>
-    <div>{serverData}</div>
+    <div>Async data: {serverData}</div>
   </div>
 )
 
