@@ -1,4 +1,5 @@
 import React from 'react'
+import fs from 'fs'
 import express from 'express'
 import { renderToString } from 'react-dom/server'
 import { Provider } from 'react-redux'
@@ -8,11 +9,21 @@ import Helper from '../src/helper'
 import Component from './components/sync'
 import Store from './store'
 import Routes from './server'
+let Document = fs.readFileSync(__dirname + '/index.html', 'utf8')
+
+const prepHTML = (jsx, store) => {
+  const state = store.getState()
+  Document = Document.replace('{{CONTENT}}', jsx)
+  Document = Document.replace('{{STATE}}', JSON.stringify(state))
+  return Document
+}
 
 const app = express()
 
 const PORT = 3000
 const TIMEOUT = 6000
+
+app.use('/build', express.static(`${__dirname}/../build`))
 
 app.get('/manual', (req, res) => {
   // New store must be created on each request, otherwise state will persist
@@ -21,7 +32,9 @@ app.get('/manual', (req, res) => {
   // When ready, re-render with updated store and send response
   const unsubscribe = store.subscribe(() => {
     if (store.getState().hydrationReducer.ready) {
-      res.send(renderToString(<Provider store={store}><Component /></Provider>))
+      const JSX = renderToString(<Provider store={store}><Component /></Provider>)
+      const HTML = prepHTML(JSX, store)
+      res.send(HTML)
       unsubscribe()
     }
   })
@@ -43,7 +56,9 @@ app.get('/helper', (req, res) => {
   const props = {}
   Helper(store, props, renderToString, jsx, TIMEOUT)
   .then(() => {
-    res.send(renderToString(jsx(store, props)))
+    const JSX = renderToString(jsx(store, props))
+    const HTML = prepHTML(JSX, store)
+    res.send(HTML)
   })
   .catch((err) => {
     console.error(err)
@@ -60,7 +75,9 @@ app.get('*', (req, res) => {
   const props = {}
   Helper(store, props, renderToString, jsx, TIMEOUT)
   .then(() => {
-    res.send(renderToString(jsx(store, props)))
+    const JSX = renderToString(jsx(store, props))
+    const HTML = prepHTML(JSX, store)
+    res.send(HTML)
   })
   .catch((err) => {
     console.error(err)
