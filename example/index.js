@@ -4,7 +4,7 @@ import express from 'express'
 import { renderToString } from 'react-dom/server'
 import { Provider } from 'react-redux'
 import createServerRenderContext from 'react-router/createServerRenderContext'
-import Helper from '../src/helper'
+import Helper from '../src/server'
 
 import Component from './components/sync'
 import Store from './store'
