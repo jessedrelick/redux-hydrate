@@ -1,5 +1,6 @@
 import React from 'react'
-import Match from 'react-router/Match'
+import { Match } from 'react-router'
+import { Link } from 'react-router'
 import { hydrationComponent } from '../index'
 
 import Sync from './components/sync'
@@ -20,6 +21,8 @@ const Async = hydrationComponent({
 
 export default () => (
 	<div>
+		<Link to="/sync">Sync</Link><br />
+		<Link to="/async">Async</Link>
 		<Match pattern='/sync' component={Sync} />
 		<Match pattern='/async' component={Async} />
 	</div>

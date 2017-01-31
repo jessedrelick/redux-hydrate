@@ -22,6 +22,9 @@ export default (state = init, action) => {
     case 'HYDRATE_COMPONENT_READY':
       return Object.assign({}, state, { ready: true })
       break
+    case 'HYDRATE_CLIENT':
+      return state
+      break
     default:
       return state
       break

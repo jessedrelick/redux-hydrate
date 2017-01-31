@@ -31,6 +31,9 @@ exports.default = function () {
     case 'HYDRATE_SAGA_READY':
       return Object.assign({}, state, { ready: true });
       break;
+    case 'HYDRATE_CLIENT':
+      return init;
+      break;
     default:
       return state;
       break;

@@ -1,13 +1,18 @@
 import { combineReducers } from 'redux'
 import hydrationReducer from '../src/reducer'
 
-const app = (state = { serverData: '' }, action) => {
+const init = {
+  syncData: '',
+  asyncData: ''
+}
+
+const app = (state = init, action) => {
   switch(action.type) {
     case 'SYNC_SUCCESS':
-      return Object.assign({}, state, { serverData: action.data })
+      return Object.assign({}, state, { syncData: action.data })
       break
     case 'ASYNC_SUCCESS':
-      return Object.assign({}, state, { serverData: action.data })
+      return Object.assign({}, state, { asyncData: action.data })
       break
     default:
       return state

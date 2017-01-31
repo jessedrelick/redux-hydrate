@@ -1,7 +1,7 @@
 import React from 'react'
-import Router from 'react-router/ServerRouter'
+import { ServerRouter } from 'react-router'
 import Routes from './routes'
 
-export default ({ location, context }) => (<Router location={location} context={context}>
+export default ({ location, context }) => (<ServerRouter location={location} context={context}>
 	<Routes />
-</Router>)
+</ServerRouter>)

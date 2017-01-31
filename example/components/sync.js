@@ -12,16 +12,16 @@ class Sync extends React.Component {
   }
 
   render() {
-    const { serverData } = this.props
+    const { syncData } = this.props
 
     return (
       <div>
-        <div>Loading: {serverData}</div>
+        <div>Loading: {syncData}</div>
       </div>
     )
   }
 }
 
-const mapState = (state) => ({ hydrationReducer: state.hydrationReducer, serverData: state.app.serverData })
+const mapState = (state) => ({ hydrationReducer: state.hydrationReducer, syncData: state.app.syncData })
 
 export default connect(mapState)(Sync)

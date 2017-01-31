@@ -24,6 +24,9 @@ exports.default = function () {
       queue.push(action.action);
       return Object.assign({}, state, { queue: queue });
       break;
+    case 'HYDRATE_CLIENT':
+      return init;
+      break;
     default:
       {
         if (state.resolvers.length < 1) {

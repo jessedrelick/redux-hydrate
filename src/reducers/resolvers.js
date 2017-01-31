@@ -16,6 +16,9 @@ export default (state = init, action) => {
       queue.push(action.action)
       return Object.assign({}, state, { queue })
       break
+    case 'HYDRATE_CLIENT':
+      return init
+      break
     default: {
         if (state.resolvers.length < 1) {
           return state

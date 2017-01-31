@@ -1,12 +1,12 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
-const Async = ({ serverData }) => (
+const Async = ({ asyncData }) => (
   <div>
-    <div>Async data: {serverData}</div>
+    <div>Async data: {asyncData}</div>
   </div>
 )
 
-const mapState = (state) => ({ serverData: state.app.serverData })
+const mapState = (state) => ({ asyncData: state.app.asyncData })
 
 export default connect(mapState)(Async)
