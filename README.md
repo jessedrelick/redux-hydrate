@@ -1,23 +1,16 @@
-# Implementation
-1. Wrap createStore() in function call, apply middleware as usual
-```javascript
-export default () {
-  const store = createStore(
-    Reducer,
-    applyMiddleware(sagaMiddleware)
-  )
-  sagaMiddleware.run(Saga)
-  return store
-}
-```
-2. Add hydrate reducer to store
-3. In componentWillMount() or React-Router onEnter(), create an if statement to determine if state.hydrate.ready is not yet true, and within this if, dispatch 'HYDRATE_REGISTER' action types with a 'resolve' property to indicate acceptable action types to resolve. Also dispatch any actions necessary to initiate those initialization processes. Otherwise infinite loop will occur.
+# Redux-Hydration
+Redux-Hydration is a small library that uses Redux to simplify server-side state **hydration**
 
-```javascript
-if (!this.props.hydrate.ready) {
-  this.props.dispatch({ type: 'HYDRATE_REGISTER', resolve: ['ASYNC_SUCCESS', 'ASYNC_FAIL'] })
-  this.props.dispatch({ type: 'ASYNC_START' })
-}
-```
-4. Wrap
-5. Set Timeout to prevent pages from hanging, or use the optional server helper and specify a timeout limit 
+#### Hydration vs Server-Side Rendering
+Server-side rendering is a popular feature used to sell React to the front-end community. In practice, however, server-side rendering can be a misleading term. In fact, there are actually 2 stages to server-side rendering:
+
+1. **Rendering** - Think of stage 1 as the 'empty' shell of the page without dynamic data. It is useful for the PERCEIVED load time of the page to the end user, because they at least see the page structure returned from the server. This is a better experience than waiting for all the client-side code to load and render before the user sees anything.
+
+2. **Hydration** - Rendering an empty page on the page is pretty simple with React, and is well-documented. 'Hydrating' that state with actual dynamic data ON THE SERVER is more complicated, and is the concern of this library.
+
+# Contents
+- [Setup & Installation](/docs/setup.md)
+- [Problem & Solution](/docs/problem.md)
+- [Example](/docs/example.md)
+- [API](/docs/api.md)
+- [Article about Hydration](/docs/article.md)
