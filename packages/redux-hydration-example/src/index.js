@@ -4,10 +4,9 @@ import { ManualComponent, HelperComponent, HelperApp } from './routes'
 const app = express()
 const PORT = 3000
 
+app.use('/build', express.static('build'))
 app.get('/manual', ManualComponent)
-
 app.get('/helper', HelperComponent)
-
 app.get('*', HelperApp)
 
 app.listen(PORT, (err) => {
