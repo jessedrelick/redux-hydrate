@@ -1,10 +1,11 @@
 {
   "name": "redux-hydration",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "Simple library for hydrating Redux state on the server",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "build": "./node_modules/.bin/babel src --out-dir dist"
+    "build": "./node_modules/.bin/babel src --out-dir dist",
+    "prepublish": "npm run build"
   },
   "repository": {
     "type": "git",
