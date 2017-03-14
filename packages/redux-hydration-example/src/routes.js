@@ -1,7 +1,7 @@
 import React from 'react'
 import { renderToString } from 'react-dom/server'
 import { Provider } from 'react-redux'
-import Helper from '../src/helper'
+import { hydrationHelper } from 'redux-hydration'
 
 import Component from './components/sync'
 import Store from './store'
@@ -36,7 +36,7 @@ export const HelperComponent = (req, res) => {
   const jsx = (store, props) => (<Provider store={store}><Component /></Provider>)
   // Optionally pass additional props to component
   const props = {}
-  Helper(store, props, renderToString, jsx, TIMEOUT)
+  hydrationHelper(store, props, renderToString, jsx, TIMEOUT)
   .then(() => {
     res.send(renderToString(jsx(store, props)))
   })
@@ -57,7 +57,7 @@ export const HelperApp = (req, res) => {
 	)
   // Optionally pass additional props to component
   const props = {}
-  Helper(store, props, renderToString, jsx, TIMEOUT)
+  hydrationHelper(store, props, renderToString, jsx, TIMEOUT)
   .then(() => {
     res.send(renderToString(jsx(store, props)))
   })

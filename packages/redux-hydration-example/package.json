@@ -1,0 +1,31 @@
+{
+  "name": "redux-hydration-example",
+  "version": "0.4.1",
+  "description": "Example of using Redux-Hydration for server-side hydration in React",
+  "main": "index.js",
+  "scripts": {
+    "start": "./node_modules/.bin/babel-node src/index.js --plugins=dynamic-import-node"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jessedrelick/redux-hydration.git"
+  },
+  "author": "Jesse Drelick <jesse.drelick@leafgroup.com>",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.14.0",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2",
+    "react-redux": "^5.0.1",
+    "react-router-dom": "^4.0.0",
+    "redux": "^3.6.0",
+    "redux-hydration": "^0.4.0",
+    "redux-saga": "^0.14.1"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.18.0",
+    "babel-plugin-dynamic-import-node": "^1.0.0",
+    "babel-preset-latest": "^6.16.0",
+    "babel-preset-react": "^6.16.0"
+  }
+}

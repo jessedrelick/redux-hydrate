@@ -1,5 +1,5 @@
 import { combineReducers } from 'redux'
-import hydrationReducer from '../src/reducer'
+import { hydrationReducer } from 'redux-hydration'
 
 const app = (state = { serverData: '' }, action) => {
   switch(action.type) {

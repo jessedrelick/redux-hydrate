@@ -1,6 +1,6 @@
 import React from 'react'
 import { Route } from 'react-router-dom'
-import { hydrationComponent } from '../index'
+import { hydrationComponent } from 'redux-hydration'
 
 import Sync from './components/sync'
 const Async = hydrationComponent(import('./components/async'), [
