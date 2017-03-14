@@ -1,3 +1,4 @@
+import fs from 'fs'
 import React from 'react'
 import { renderToString } from 'react-dom/server'
 import { Provider } from 'react-redux'
@@ -6,8 +7,16 @@ import { hydrationHelper } from 'redux-hydration'
 import Component from './components/sync'
 import Store from './store'
 import Server from './server'
+let Document = fs.readFileSync(__dirname + '/../index.html', 'utf8')
 
 const TIMEOUT = 6000
+
+const prepHTML = (jsx, store) => {
+  const state = store.getState()
+  Document = Document.replace('{{CONTENT}}', jsx)
+  Document = Document.replace('{}', JSON.stringify(state))
+  return Document
+}
 
 export const ManualComponent = (req, res) => {
   // New store must be created on each request, otherwise state will persist
@@ -59,7 +68,9 @@ export const HelperApp = (req, res) => {
   const props = {}
   hydrationHelper(store, props, renderToString, jsx, TIMEOUT)
   .then(() => {
-    res.send(renderToString(jsx(store, props)))
+    const JSX = renderToString(jsx(store, props))
+    const HTML = prepHTML(JSX, store)
+    res.send(HTML)
   })
   .catch((err) => {
     console.error(err)
