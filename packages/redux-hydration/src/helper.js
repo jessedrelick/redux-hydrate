@@ -9,7 +9,7 @@ export default (store, props, render, jsx, timeout) => {
     render(jsx(store, props))
     store.dispatch({ type: 'HYDRATE_START' })
     setTimeout(() => {
-      resolve()
+      resolve(true)
     }, timeout)
   })
 }
