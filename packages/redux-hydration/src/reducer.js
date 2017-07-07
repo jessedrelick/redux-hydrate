@@ -1,4 +1,4 @@
-export default (state = { initialized: false, ready: false, register: [] }, action) => {
+export default (state = { initialized: false, ready: false, timeout: false, register: [] }, action) => {
   switch(action.type) {
     case 'HYDRATE_REGISTER': {
         let register = state.register.slice()
@@ -8,6 +8,10 @@ export default (state = { initialized: false, ready: false, register: [] }, acti
       break
     case 'HYDRATE_START': {
         return Object.assign({}, state, { initialized: true, ready: state.register.length < 1 })
+      }
+      break
+    case 'HYDRATE_TIMEOUT': {
+        return Object.assign({}, state, { timeout: true })
       }
       break
     default: {

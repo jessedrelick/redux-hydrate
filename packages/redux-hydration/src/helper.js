@@ -4,11 +4,13 @@ export default (store, props, render, jsx, timeout) => {
       if (store.getState().hydrationReducer.ready) {
         resolve()
         unsubscribe()
+        clearTimeout(to)
       }
     })
     render(jsx(store, props))
     store.dispatch({ type: 'HYDRATE_START' })
-    setTimeout(() => {
+    const to = setTimeout(() => {
+      store.dispatch({ type: 'HYDRATE_TIMEOUT' })
       unsubscribe()
       resolve(true)
     }, timeout)

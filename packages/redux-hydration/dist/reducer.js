@@ -5,7 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 
 exports.default = function () {
-  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { initialized: false, ready: false, register: [] };
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { initialized: false, ready: false, timeout: false, register: [] };
   var action = arguments[1];
 
   switch (action.type) {
@@ -19,6 +19,11 @@ exports.default = function () {
     case 'HYDRATE_START':
       {
         return Object.assign({}, state, { initialized: true, ready: state.register.length < 1 });
+      }
+      break;
+    case 'HYDRATE_TIMEOUT':
+      {
+        return Object.assign({}, state, { timeout: true });
       }
       break;
     default:
