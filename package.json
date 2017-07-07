@@ -2,7 +2,10 @@
   "name": "redux-hydration-packages",
   "description": "Repository for Redux-Hydration",
   "private": true,
+  "scripts": {
+    "build": "lerna clean && lerna bootstrap --hoist"
+  },
   "devDependencies": {
-    "lerna": "2.0.0"
+    "lerna": "^2.0.0"
   }
 }
