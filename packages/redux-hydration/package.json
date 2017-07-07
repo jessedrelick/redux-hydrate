@@ -1,6 +1,6 @@
 {
   "name": "redux-hydration",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Simple library for hydrating Redux state on the server",
   "main": "dist/index.js",
   "scripts": {
