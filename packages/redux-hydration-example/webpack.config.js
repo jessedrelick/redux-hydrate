@@ -1,7 +1,7 @@
 var path = require('path')
 var webpack = require('webpack')
 var CleanWebpackPlugin = require('clean-webpack-plugin')
-var entryFile = './src/browser'
+var entryFile = './src/browser/index'
 
 // Standard development
 //{ test: /\.css$/, loader: "style-loader!css-loader" },
