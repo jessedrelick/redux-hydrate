@@ -20,7 +20,7 @@ if (process.env.NODE_ENV === 'production') {
 let config = {
 	devtool: 'eval',
 	entry: {
-		vendor: ['babel-polyfill', 'react', 'react-dom', 'react-router-dom', 'react-redux', 'redux', 'redux-saga', 'redux-hydration'],
+		vendor: ['babel-polyfill', 'react', 'react-dom', 'react-router-dom', 'react-redux', 'redux', 'redux-saga', 'redux-hydration', 'window-or-global'],
 		app
 	},
 	output: {

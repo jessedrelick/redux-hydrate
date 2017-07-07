@@ -15,7 +15,8 @@ exports.default = function (store, props, render, jsx, timeout) {
     render(jsx(store, props));
     store.dispatch({ type: 'HYDRATE_START' });
     setTimeout(function () {
-      resolve();
+      unsubscribe();
+      resolve(true);
     }, timeout);
   });
 };
