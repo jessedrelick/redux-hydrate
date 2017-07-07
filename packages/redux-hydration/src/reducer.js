@@ -1,4 +1,4 @@
-export default (state = { initialized: false, ready: false, timeout: false, register: [] }, action) => {
+export default (state = { initialized: false, ready: false, timeout: false, register: [], log: [] }, action) => {
   switch(action.type) {
     case 'HYDRATE_REGISTER': {
         let register = state.register.slice()
@@ -18,11 +18,14 @@ export default (state = { initialized: false, ready: false, timeout: false, regi
         if (state.ready) {
           return state
         }
+        let log = state.log.slice()
+        log.push(action.type)
         let register = state.register.filter((item) => {
           return item.indexOf(action.type) > -1 ? false : true
         })
         return Object.assign({}, state, {
           register,
+          log,
           ready: state.initialized === true && register.length < 1
         })
       }

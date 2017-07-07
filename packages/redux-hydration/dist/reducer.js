@@ -5,7 +5,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 
 exports.default = function () {
-  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { initialized: false, ready: false, timeout: false, register: [] };
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { initialized: false, ready: false, timeout: false, register: [], log: [] };
   var action = arguments[1];
 
   switch (action.type) {
@@ -31,11 +31,14 @@ exports.default = function () {
         if (state.ready) {
           return state;
         }
+        var log = state.log.slice();
+        log.push(action.type);
         var _register = state.register.filter(function (item) {
           return item.indexOf(action.type) > -1 ? false : true;
         });
         return Object.assign({}, state, {
           register: _register,
+          log: log,
           ready: state.initialized === true && _register.length < 1
         });
       }
