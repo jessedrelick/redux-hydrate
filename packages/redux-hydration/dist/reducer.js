@@ -3,9 +3,25 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+var init = {
+  initialized: false,
+  ready: false,
+  timeout: false,
+  register: [],
+  log: [],
+  unresolved: []
+};
+
+var diff = function diff(register, log) {
+  return register.filter(function (resolvers) {
+    return !log.some(function (action) {
+      return resolvers.indexOf(action) >= 0;
+    });
+  });
+};
 
 exports.default = function () {
-  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : { initialized: false, ready: false, timeout: false, register: [], log: [] };
+  var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : init;
   var action = arguments[1];
 
   switch (action.type) {
@@ -18,12 +34,14 @@ exports.default = function () {
       break;
     case 'HYDRATE_START':
       {
-        return Object.assign({}, state, { initialized: true, ready: state.register.length < 1 });
+        var unresolved = diff(state.register.slice(), state.log.slice());
+        return Object.assign({}, state, { initialized: true, ready: unresolved.length < 1 });
       }
       break;
     case 'HYDRATE_TIMEOUT':
       {
-        return Object.assign({}, state, { timeout: true });
+        var _unresolved = diff(state.register.slice(), state.log.slice());
+        return Object.assign({}, state, { timeout: true, unresolved: _unresolved });
       }
       break;
     default:
@@ -33,13 +51,10 @@ exports.default = function () {
         }
         var log = state.log.slice();
         log.push(action.type);
-        var _register = state.register.filter(function (item) {
-          return item.indexOf(action.type) > -1 ? false : true;
-        });
+        var _unresolved2 = diff(state.register.slice(), log.slice());
         return Object.assign({}, state, {
-          register: _register,
           log: log,
-          ready: state.initialized === true && _register.length < 1
+          ready: state.initialized === true && _unresolved2.length < 1
         });
       }
       break;

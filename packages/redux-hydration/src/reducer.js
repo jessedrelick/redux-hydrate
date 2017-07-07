@@ -1,4 +1,17 @@
-export default (state = { initialized: false, ready: false, timeout: false, register: [], log: [] }, action) => {
+const init = {
+  initialized: false,
+  ready: false,
+  timeout: false,
+  register: [],
+  log: [],
+  unresolved: []
+}
+
+const diff = (register, log) => (
+  register.filter(resolvers => !log.some(action => resolvers.indexOf(action) >= 0))
+)
+
+export default (state = init, action) => {
   switch(action.type) {
     case 'HYDRATE_REGISTER': {
         let register = state.register.slice()
@@ -7,11 +20,13 @@ export default (state = { initialized: false, ready: false, timeout: false, regi
       }
       break
     case 'HYDRATE_START': {
-        return Object.assign({}, state, { initialized: true, ready: state.register.length < 1 })
+        const unresolved = diff(state.register.slice(), state.log.slice())
+        return Object.assign({}, state, { initialized: true, ready: unresolved.length < 1 })
       }
       break
     case 'HYDRATE_TIMEOUT': {
-        return Object.assign({}, state, { timeout: true })
+        const unresolved = diff(state.register.slice(), state.log.slice())
+        return Object.assign({}, state, { timeout: true, unresolved })
       }
       break
     default: {
@@ -20,13 +35,10 @@ export default (state = { initialized: false, ready: false, timeout: false, regi
         }
         let log = state.log.slice()
         log.push(action.type)
-        let register = state.register.filter((item) => {
-          return item.indexOf(action.type) > -1 ? false : true
-        })
+        const unresolved = diff(state.register.slice(), log.slice())
         return Object.assign({}, state, {
-          register,
           log,
-          ready: state.initialized === true && register.length < 1
+          ready: state.initialized === true && unresolved.length < 1
         })
       }
       break
