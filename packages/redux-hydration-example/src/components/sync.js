@@ -6,8 +6,7 @@ class Sync extends React.Component {
   componentWillMount() {
     // If these are executed even after state is hydrated it will result in infinite loop
     if (!this.props.hydrationReducer.ready) {
-      this.props.dispatch({ type: 'HYDRATE_REGISTER', resolve: ['SYNC_SUCCESS', 'SYNC_FAIL'] })
-      this.props.dispatch({ type: 'SYNC_START' })
+      this.props.dispatch({ type: 'HYDRATE_REGISTER', initializer: 'SYNC_START', resolvers: ['SYNC_SUCCESS', 'SYNC_FAIL'] })
     }
   }
 

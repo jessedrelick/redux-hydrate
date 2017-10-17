@@ -1,7 +1,7 @@
 import React from 'react'
 import { connect } from 'react-redux'
 
-export default (resolvers) => (Component) => {
+export default (actions) => (Component) => {
 
 	const
 		mapState = (state) => {
@@ -15,9 +15,12 @@ export default (resolvers) => (Component) => {
 
 		componentWillMount() {
 			const { dispatch, hydrationReducer } = this.props
-			if (!hydrationReducer.ready && resolvers) {
-				resolvers.forEach((action) => {
-					dispatch(action)
+			if (!hydrationReducer.ready && actions) {
+				actions.forEach((action) => {
+					if (action.type === 'HYDRATE_REGISTER' && action.initializer) {
+						dispatch(action)
+						dispatch({ type: action.initializer })
+					}
 				})
 			}
 		}
@@ -29,6 +32,3 @@ export default (resolvers) => (Component) => {
 
 	return connect(mapState)(Hydrate)
 }
-
-
-

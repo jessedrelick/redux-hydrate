@@ -6,8 +6,7 @@ import Sync from './components/sync'
 import async from './components/async'
 
 const Async = hydrationComponent([
-	{ type: 'HYDRATE_REGISTER', resolve: ['ASYNC_SUCCESS', 'ASYNC_FAIL'] },
-	{ type: 'ASYNC_START' }
+	{ type: 'HYDRATE_REGISTER', initializer: 'ASYNC_START', resolvers: ['ASYNC_SUCCESS', 'ASYNC_FAIL'] }
 ])(async)
 
 export default () => (

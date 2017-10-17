@@ -3,19 +3,22 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 var init = {
   initialized: false,
   ready: false,
   timeout: false,
-  register: [],
+  register: {},
   log: [],
   unresolved: []
 };
 
 var diff = function diff(register, log) {
-  return register.filter(function (resolvers) {
+  return Object.keys(register).filter(function (k) {
     return !log.some(function (action) {
-      return resolvers.indexOf(action) >= 0;
+      return register[k].indexOf(action) >= 0;
     });
   });
 };
@@ -27,20 +30,19 @@ exports.default = function () {
   switch (action.type) {
     case 'HYDRATE_REGISTER':
       {
-        var register = state.register.slice();
-        register.push(action.resolve);
+        var register = Object.assign({}, state.register, _defineProperty({}, action.initializer, action.resolvers));
         return Object.assign({}, state, { register: register });
       }
       break;
     case 'HYDRATE_START':
       {
-        var unresolved = diff(state.register.slice(), state.log.slice());
+        var unresolved = diff(state.register, state.log.slice());
         return Object.assign({}, state, { initialized: true, ready: unresolved.length < 1 });
       }
       break;
     case 'HYDRATE_TIMEOUT':
       {
-        var _unresolved = diff(state.register.slice(), state.log.slice());
+        var _unresolved = diff(state.register, state.log.slice());
         return Object.assign({}, state, { timeout: true, unresolved: _unresolved });
       }
       break;
@@ -51,7 +53,7 @@ exports.default = function () {
         }
         var log = state.log.slice();
         log.push(action.type);
-        var _unresolved2 = diff(state.register.slice(), log.slice());
+        var _unresolved2 = diff(state.register, log.slice());
         return Object.assign({}, state, {
           log: log,
           ready: state.initialized === true && _unresolved2.length < 1
