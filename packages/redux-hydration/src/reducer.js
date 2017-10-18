@@ -15,10 +15,12 @@ const
 export default (state = init, action) => {
   switch(action.type) {
     case 'HYDRATE_REGISTER': {
-        const register = Object.assign({}, state.register, {
-          [action.initializer]: action.resolvers
-        })
-        return Object.assign({}, state, { register })
+        const
+          register = Object.assign({}, state.register, {
+            [action.initializer]: action.resolvers
+          }),
+          out = Object.assign({}, state, { register })
+        return out
       }
       break
     case 'HYDRATE_START': {

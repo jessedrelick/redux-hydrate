@@ -30,8 +30,9 @@ exports.default = function () {
   switch (action.type) {
     case 'HYDRATE_REGISTER':
       {
-        var register = Object.assign({}, state.register, _defineProperty({}, action.initializer, action.resolvers));
-        return Object.assign({}, state, { register: register });
+        var register = Object.assign({}, state.register, _defineProperty({}, action.initializer, action.resolvers)),
+            out = Object.assign({}, state, { register: register });
+        return out;
       }
       break;
     case 'HYDRATE_START':

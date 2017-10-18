@@ -20,6 +20,8 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
+var TYPE_REGISTER = 'HYDRATE_REGISTER';
+
 exports.default = function (actions) {
 	return function (Component) {
 
@@ -47,9 +49,19 @@ exports.default = function (actions) {
 					    dispatch = _props.dispatch,
 					    hydrationReducer = _props.hydrationReducer;
 
-					if (!hydrationReducer.ready && actions) {
+					if (hydrationReducer.ready) {
+						return;
+					}
+
+					if (hydrationReducer.timeout) {
+						var unresolved = hydrationReducer.unresolved;
+
+						unresolved.forEach(function (k) {
+							dispatch({ type: k });
+						});
+					} else if (actions) {
 						actions.forEach(function (action) {
-							if (action.type === 'HYDRATE_REGISTER' && action.initializer) {
+							if (action.type === TYPE_REGISTER && action.initializer) {
 								dispatch(action);
 								dispatch({ type: action.initializer });
 							}
