@@ -1,3 +1,5 @@
+import { diff } from './util'
+
 const init = {
   initialized: false,
   ready: false,
@@ -6,11 +8,6 @@ const init = {
   log: [],
   unresolved: []
 }
-
-const
-  diff = (register, log) => (
-    Object.keys(register).filter(k => !log.some(action => register[k].indexOf(action) >= 0))
-  )
 
 export default (state = init, action) => {
   switch(action.type) {
@@ -42,6 +39,7 @@ export default (state = init, action) => {
         const unresolved = diff(state.register, log.slice())
         return Object.assign({}, state, {
           log,
+          unresolved,
           ready: state.initialized === true && unresolved.length < 1
         })
       }
