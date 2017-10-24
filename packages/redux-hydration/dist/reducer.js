@@ -46,14 +46,19 @@ exports.default = function () {
         if (state.ready) {
           return state;
         }
-        var log = state.log.slice();
+        var logObject = {},
+            log = state.log.slice();
         log.push(action.type);
+        if (typeof window === 'undefined') {
+          logObject = {
+            log: log
+          };
+        }
         var _unresolved2 = (0, _util.diff)(state.register, log.slice());
         return Object.assign({}, state, {
-          log: log,
           unresolved: _unresolved2,
           ready: state.initialized === true && _unresolved2.length < 1
-        });
+        }, logObject);
       }
       break;
   }

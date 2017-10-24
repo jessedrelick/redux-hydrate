@@ -49,7 +49,7 @@ exports.default = function (actions) {
 					    dispatch = _props.dispatch,
 					    hydrationReducer = _props.hydrationReducer;
 
-					if (hydrationReducer.ready || !actions) {
+					if (hydrationReducer.initialized || !actions) {
 						return;
 					}
 

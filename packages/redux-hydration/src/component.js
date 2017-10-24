@@ -18,7 +18,7 @@ export default (actions) => (Component) => {
 
 		componentWillMount() {
 			const { dispatch, hydrationReducer } = this.props
-			if (hydrationReducer.ready || !actions) {
+			if (hydrationReducer.initialized || !actions) {
 				return
 			}
 

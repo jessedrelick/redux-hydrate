@@ -34,14 +34,20 @@ export default (state = init, action) => {
         if (state.ready) {
           return state
         }
-        let log = state.log.slice()
+        let
+          logObject = {},
+          log = state.log.slice()
         log.push(action.type)
+        if (typeof window === 'undefined') {
+          logObject = {
+            log
+          }
+        }
         const unresolved = diff(state.register, log.slice())
         return Object.assign({}, state, {
-          log,
           unresolved,
           ready: state.initialized === true && unresolved.length < 1
-        })
+        }, logObject)
       }
       break
   }
