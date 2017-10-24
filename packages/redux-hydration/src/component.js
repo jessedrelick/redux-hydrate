@@ -18,23 +18,16 @@ export default (actions) => (Component) => {
 
 		componentWillMount() {
 			const { dispatch, hydrationReducer } = this.props
-			if (hydrationReducer.ready) {
+			if (hydrationReducer.ready || !actions) {
 				return
 			}
 
-			if (hydrationReducer.timeout) {
-				const { unresolved } = hydrationReducer
-				unresolved.forEach(k => {
-					dispatch({ type: k })
-				})
-			} else if (actions) {
-				actions.forEach((action) => {
-					if (action.type === TYPE_REGISTER && action.initializer) {
-						dispatch(action)
-						dispatch({ type: action.initializer })
-					}
-				})
-			}
+			actions.forEach((action) => {
+				dispatch(action)
+				if (action.type === TYPE_REGISTER && action.initializer) {
+					dispatch({ type: action.initializer })
+				}
+			})
 		}
 
 		render() {

@@ -49,24 +49,16 @@ exports.default = function (actions) {
 					    dispatch = _props.dispatch,
 					    hydrationReducer = _props.hydrationReducer;
 
-					if (hydrationReducer.ready) {
+					if (hydrationReducer.ready || !actions) {
 						return;
 					}
 
-					if (hydrationReducer.timeout) {
-						var unresolved = hydrationReducer.unresolved;
-
-						unresolved.forEach(function (k) {
-							dispatch({ type: k });
-						});
-					} else if (actions) {
-						actions.forEach(function (action) {
-							if (action.type === TYPE_REGISTER && action.initializer) {
-								dispatch(action);
-								dispatch({ type: action.initializer });
-							}
-						});
-					}
+					actions.forEach(function (action) {
+						dispatch(action);
+						if (action.type === TYPE_REGISTER && action.initializer) {
+							dispatch({ type: action.initializer });
+						}
+					});
 				}
 			}, {
 				key: 'render',
