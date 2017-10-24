@@ -3,21 +3,18 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+
+var _util = require('./util');
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 var init = {
   initialized: false,
   ready: false,
   timeout: false,
-  register: [],
+  register: {},
   log: [],
   unresolved: []
-};
-
-var diff = function diff(register, log) {
-  return register.filter(function (resolvers) {
-    return !log.some(function (action) {
-      return resolvers.indexOf(action) >= 0;
-    });
-  });
 };
 
 exports.default = function () {
@@ -27,20 +24,20 @@ exports.default = function () {
   switch (action.type) {
     case 'HYDRATE_REGISTER':
       {
-        var register = state.register.slice();
-        register.push(action.resolve);
-        return Object.assign({}, state, { register: register });
+        var register = Object.assign({}, state.register, _defineProperty({}, action.initializer, action.resolvers)),
+            out = Object.assign({}, state, { register: register });
+        return out;
       }
       break;
     case 'HYDRATE_START':
       {
-        var unresolved = diff(state.register.slice(), state.log.slice());
+        var unresolved = (0, _util.diff)(state.register, state.log.slice());
         return Object.assign({}, state, { initialized: true, ready: unresolved.length < 1 });
       }
       break;
     case 'HYDRATE_TIMEOUT':
       {
-        var _unresolved = diff(state.register.slice(), state.log.slice());
+        var _unresolved = (0, _util.diff)(state.register, state.log.slice());
         return Object.assign({}, state, { timeout: true, unresolved: _unresolved });
       }
       break;
@@ -49,13 +46,19 @@ exports.default = function () {
         if (state.ready) {
           return state;
         }
-        var log = state.log.slice();
+        var logObject = {},
+            log = state.log.slice();
         log.push(action.type);
-        var _unresolved2 = diff(state.register.slice(), log.slice());
+        if (typeof window === 'undefined') {
+          logObject = {
+            log: log
+          };
+        }
+        var _unresolved2 = (0, _util.diff)(state.register, log.slice());
         return Object.assign({}, state, {
-          log: log,
+          unresolved: _unresolved2,
           ready: state.initialized === true && _unresolved2.length < 1
-        });
+        }, logObject);
       }
       break;
   }

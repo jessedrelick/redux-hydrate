@@ -1,11 +1,12 @@
 {
   "name": "redux-hydration",
-  "version": "0.5.1",
+  "version": "0.6.3",
   "description": "Simple library for hydrating Redux state on the server",
   "main": "dist/index.js",
   "scripts": {
     "build": "./node_modules/.bin/babel src --out-dir dist",
-    "prepublish": "npm run build"
+    "prepublish": "npm run build",
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -14,12 +15,13 @@
   "author": "Jesse Drelick <jesse.drelick@leafgroup.com>",
   "license": "ISC",
   "dependencies": {
-    "react": "^15.4.2",
-    "react-redux": "^5.0.1"
+    "react": "^16.0.0",
+    "react-redux": "^5.0.0"
   },
   "devDependencies": {
-    "babel-cli": "^6.18.0",
-    "babel-preset-latest": "^6.16.0",
-    "babel-preset-react": "^6.16.0"
+    "babel-cli": "^6.22.0",
+    "babel-preset-env": "^1.6.0",
+    "babel-preset-react": "^6.22.0",
+    "jest": "^21.2.0"
   }
 }

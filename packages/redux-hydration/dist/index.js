@@ -4,6 +4,15 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _client = require('./client');
+
+Object.defineProperty(exports, 'hydrationClient', {
+  enumerable: true,
+  get: function get() {
+    return _interopRequireDefault(_client).default;
+  }
+});
+
 var _component = require('./component');
 
 Object.defineProperty(exports, 'hydrationComponent', {
